@@ -1,8 +1,5 @@
 /**
- * Print data followed by a newline to the serial interface
- * only when debugging is enabled
- * 
- * This is a no-op when debugging is disabled.
+ * zeilenweises Printen wenn debugging aktiviert * 
  * \see Serial::println
  */
 template<typename T>
@@ -19,10 +16,8 @@ void debugprintln(
 }
 
 /**
- * Print data to the serial interface only when debugging is enabled
- * 
- * This is a no-op when debugging is disabled.
- * \see Serial::print
+ * zeilenweises Printen wenn debugging aktiviert * 
+ * \see Serial::println
  */
 template<typename T>
 void debugprint(
