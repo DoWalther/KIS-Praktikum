@@ -1,20 +1,16 @@
 /**
- * Call a function every time a rising edge is detected on a signal
- * 
- * \ref provideState must be called every time a new signal state information
- * is available or should be evaluated
+ * Funtkionsaufruf bei jeder Hochflanke eines Signales
  */
 class EdgeDetector
 {
-  /// Previous state information
   bool mLastState = false;
   
 public:
-  /// Type for functions called when a rising edge is detected
+  /// Typ für Funktionen die bei Hochflanken ausgelöst werden
   typedef void (*CallbackType)(void);
 
 private:
-  /// Function called when a rising edge is detected
+  /// Funktion die bei Hochflanken ausgelöst wird
   CallbackType mCallback = nullptr;
 
 public:
