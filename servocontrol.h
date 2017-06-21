@@ -1,31 +1,26 @@
 #include <Servo.h>
 
 /**
- * Control the ball release servo motor
- * 
- * \ref setup must be called in the Arduino main setup function.
+ * Motorkontrolle
  */
 class ServoControl
 {
-  /// Pin number of the servo motor
+  /// Pin des Motors
   int mPin;
-  /// Arduino servo library instance
+  /// Arduino servo library Instanzierung
   Servo mServo;
   
 public:
   /**
-   * Instantiate a new servo controller
-   * 
-   * \param pin pin number of the servo motor
+   * instanziert neuen Motor
    */
   ServoControl(int pin)
   : mPin(pin)
   {}
 
   /**
-   * Configure the controller
+   * Konfiguration des Motors
    * 
-   * Attaches and resets the servo to the fully-closed position.
    */
   void setup()
   {

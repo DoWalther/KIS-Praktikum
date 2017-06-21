@@ -1,5 +1,5 @@
 /**
- * Funtkionsaufruf bei jeder Hochflanke eines Signales
+ * Funktionsaufruf bei jeder Hochflanke eines Signales
  */
 class EdgeDetector
 {

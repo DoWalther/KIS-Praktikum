@@ -23,19 +23,16 @@ class Inhibitor
   unsigned long mLastTurnTime = 0;
   
   /** 
-   * Number of remaining full turntable rounds ball release is inhibited for
-   * 
-   * Ball release is not inhibited if this is zero (the default).
+   Anzahl der Runden, bei der Auslösung gesperrt ist
    */
   unsigned short mInhibitRounds = 0;
   
 public:
   /**
-   * Detect changes in the turntable speed via the light sensor
+   * Prüfung auf Veränderung der Geschwindigkeit des Drehtisches
    */
   void lightSpeedCallback(unsigned long turnTime)
   {
-    // Cast to (signed) long as result could be negative
     if (fabs(static_cast<double> (mLastTurnTime) - static_cast<double> (turnTime)) / static_cast<double> (turnTime) > RELATIVE_INHIBITION_THRESHOLD) {
       debugprintln("=== inhibition");
       debugprint("last turn time: ");
@@ -48,7 +45,7 @@ public:
   }
 
   /**
-   * Decrease remaining inhibited rounds when a round completes
+   * Nach einer Runde: Verminderung der verbleibenenden Sperrrunden
    */
   void hallSpeedCallback(unsigned long)
   {
@@ -58,7 +55,7 @@ public:
   }
 
   /**
-   * Get whether ball release is currently inhibited
+   * Prüfung, ob Auslösung gerade gesperrt ist
    */
   bool isInhibited() const
   {

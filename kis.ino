@@ -9,23 +9,16 @@
 #include "statemachine.h"
 #include "edgedetector.h"
 
-/// Global inhibitor
 Inhibitor inhibitor;
-/// Global speed monitor using the hall sensor, measuring full cycles
-SpeedMonitor hallSpeedMonitor(PIN_HALL_SENSOR);
-/// Global speed monitor using the light sensor, measuring half cycles
-SpeedMonitor lightSpeedMonitor(PIN_LIGHT_SENSOR, 12, true);
-/// Global servo controller
+SpeedMonitor hallSpeedMonitor(PIN_HALL_SENSOR); // misst volle Runden
+SpeedMonitor lightSpeedMonitor(PIN_LIGHT_SENSOR, 12, true); // misst halbe Runde
 ServoControl servoControl(PIN_SERVO);
-/// Global release time calculator
 TimeCalculation timeCalculation;
-/// Global state machine
 StateMachine stateMachine(servoControl);
-/// Global button 1 edge detector
 EdgeDetector firstButtonEdgeDetector;
 
 /**
- * Setup pin modes for pins used in the \ref loop function directly
+ * Festlegung Input/Output Pins
  */
 void setupPins()
 {
@@ -36,7 +29,7 @@ void setupPins()
 }
 
 /**
- * Call the setup functions of all relevant components
+ * Setup aller relevanten Komponenten
  */
 void setupComponents()
 {
@@ -46,7 +39,7 @@ void setupComponents()
 }
 
 /**
- * Setup component interconnections
+ * Setup der Komponenten-Verbindungen
  */
 void setupComponentConnections()
 {
@@ -76,9 +69,7 @@ void setupComponentConnections()
 }
 
 /**
- * System setup
- * 
- * Instantiate components and connect them.
+System Setup - iniziert alle Komponenten und verbindet diese
  */
 void setup()
 {
@@ -92,7 +83,7 @@ void setup()
 }
 
 /**
- * Main loop
+ * Hauptschleife
  */
 void loop()
 {
