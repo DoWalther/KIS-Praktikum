@@ -5,47 +5,52 @@
  * 
  * Measurement data can be polled with \ref turnTime or optionally pushed to a callback
  * function by using \ref setCallback.
+
+ * Aufzeichnung der Dauer eines high/low Zyklus eines Pins.
+ * 
+ * \ref setup und \ref loop müssen in ihren jeweilgen Arduino Gegenstück aufgerufen werden.
+ * 
+ * Die überprüften Daten können mit \ref turnTime gepullt oder optional zu einer callback Funktion mit \ref setCallback gepusht werden.
  */
 class SpeedMonitor
 {
-  /// Number of the pin monitored
+  /// ID des überwachten Pins.
   const int mPin;
 
-  /// Time of the last transition
+  /// Zeit des letzten übergangs.
   unsigned long mLastTime = 0;
-  /// State of the pin that was measured last
+  /// Zustand des Pins, der als letztes aufgezeichnet wurde.
   bool mLastState = 0;
-  /// Saved cycle duration
+  /// Zyklusdauer
   unsigned long mTurnTime = 0;
 
-  /// Factor to multiple the raw cycle duration with to get \ref mTurnTime
+  /// Faktor, mit dem die Zyklusdauer multipliziert wird um \ref mTurnTime zu erhalten.
   unsigned short mFactor;
-  /// Whether to measure full cycles (high to low transition) or half cycles (low to high and high to low)
-  /// \note Half cycles should only be measured when the duty cycle is approx. 50 %
+  /// Ob komplette Zyklen (high/low transitionen) oder halbe Zyklen (low -> high und high -> low) gemessen werden sollen.
+  /// Halbe Zyklen sollten nur gemmesn werden, wenn der Arbeitszyklus ca. 50% beträgt.
   bool mMeasureHalfCycles;
 
 public:
-  /// Type for functions called when a new measurement is ready
   typedef void (*CallbackType)(unsigned long);
   
 private:
-  /// Function to be called when a new measurement is ready
+  /// Funktion die aufgerufen wird, wenn eine neue Messung bereit steht.
   CallbackType mCallback = nullptr;
   
 public:
   /**
-   * Instantiate a new SpeedMonitor
-   * 
-   * \param pin number of the pin to monitor
-   * \param factor factor to multiple the raw cycle duration with to get the turn time
-   * \param measureHalfCycles Whether to measure full cycles (low to high transition) or half cycles (low to high and high to low)
+   * Instanziierung eines neuen SpeedMontors.
+   *
+   *\param pin ID des überwachten Pins.
+   *\param factor Faktor mit dem die Zyklusdauer multipliziert wird, um die Zeit für eine volle Umdrehung zu erhalten.
+   *\measureHalfCycles Ob komplette Zyklen (high/low transitionen) oder halbe Zyklen (low -> high und high -> low) gemessen werden sollen.
    */
   SpeedMonitor(int pin, unsigned short factor = 1, bool measureHalfCycles = false)
   : mPin(pin), mFactor(factor), mMeasureHalfCycles(measureHalfCycles)
   {}
 
   /**
-   * Configure the monitoring
+   * Einstellung des Monitors.
    */
   void setup()
   {
@@ -53,18 +58,18 @@ public:
   }
 
   /**
-   * Loop function to be called in the arduino main loop
-   * 
-   * Monitors the pin for state transitions and measures the time
-   * accordingly
+   *
+   * Schleife die durch die Arduino Hauptschleife aufgerufen wird.
+   *
+   * Überwacht den Pin, nach Zustandsübergängen und misst die Zeit zwischen diesen.
    */
   void loop()
   {
     int state = digitalRead(mPin);
     
     if (state != mLastState) {
-      // State transition happened
-      // Only trigger on high to low transition for full cycles
+      /// Zustandsübergang aufgetreten.
+      /// Wird nur bei high -> low Übergängen oder kompletten Zyklen getriggert. 
       if (mMeasureHalfCycles || !state) {
         unsigned long now = micros();
         unsigned long dif = now - mLastTime;
@@ -83,16 +88,16 @@ public:
   }
 
   /**
-   * Set a function to be called when a new measurement is ready
-   */
+   * Setzt eine Funktion die aufgerufen wird, wenn eine neue Messung bereit steht.
+   */ 
   void setCallback(CallbackType callback)
   {
     mCallback = callback;
   }
 
   /**
-   * Get the last cycle measurement
-   * \return turn time (last raw cycle time multiplied by \ref mFactor) in µs
+   * Gibt die letzte Zyklusmessung zurück.
+   * \return turnTime (Letzte Zykluszeit multipliziert mit \ref mFactor) in µs
    */
   unsigned long turnTime() const
   {
@@ -100,8 +105,8 @@ public:
   }
 
   /**
-   * Get the time the last measurement was taken
-   * \return when the last measurement was taken in µs since Arduino boot
+   *Gibt den Zeitpunkt der letzten Messung zurück.
+   *\return lastMeasurementTime Zeitpunkt der letzten Messung, seit dem Boot des Arduino. (in µs)
    */
   unsigned long lastMeasurementTime() const
   {

@@ -7,19 +7,19 @@ class ServoControl
 {
   /// Pin des Motors
   int mPin;
-  /// Arduino servo library Instanzierung
+  /// Arduino servo library Instanzierung.
   Servo mServo;
   
 public:
   /**
-   * instanziert neuen Motor
+   * Instanziert einen neuen Motor.
    */
   ServoControl(int pin)
   : mPin(pin)
   {}
 
   /**
-   * Konfiguration des Motors
+   * Konfiguration des Motors.
    * 
    */
   void setup()
@@ -29,7 +29,7 @@ public:
   }
 
   /**
-   * Release the ball
+   * Kugel wird freigegeben.
    */
   void release()
   {
@@ -37,7 +37,7 @@ public:
   }
 
   /**
-   * Fully close the release mechanism so the next ball can fall through
+   * Schließen des Fallmechanismus, damit die nächste Kugel freigegeben werden kann.
    */
   void nextBall()
   {
@@ -45,11 +45,10 @@ public:
   }
 
   /**
-   * Prepare to release the ball
+   * Vorbereitung zur Freigabe der Kugel.
    * 
-   * Opens the release mechanism so that the ball almost falls down. This
-   * preparation reduces the time needed to actually perform the release
-   * when the time comes.
+   * Fallmechanismus wird so weit geöffnet, dass die Kugel beinahe fallen gelassen wird.
+   * Dieser Schritt reduziert die tatsächlich benötigte Zeit, um die Kugel fallen zu lassen, wenn es soweit ist.
    */
   void prepareRelease()
   {

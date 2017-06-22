@@ -8,42 +8,48 @@
  * on construction.
  * 
  * \ref advanceState must be called in the Arduino main loop.
+
+ * Zustandsmaschine
+ * 
+ * Zustandsmaschine ist vom Rest des Systems entkoppelt. Der input muss als functor bereit gestellt werden.
+ * Welche über  \ref setReleaseTimeCalculator, \ref setTriggerProvider und \ref setInhibitionProvider aufgerufen werden können.,
+ * sobald die Daten benötigt werden.
+ * Der einzige output ist der Servomotor, dessen Zugriff durch \ref ServoControl bereitgestellt wird.
+ *
+ * \ref advanceState muss in der Arduino Hauptschleife aufgerufen werden.
  */
 class StateMachine
 {
 public:
-  /// State type
+  /// Zustände
   enum class State {
-    /// Fully close release mechanism so the next ball can fall through (initial state)
+    /// Fallmechanismus wird komplett geschlossen, dass die Kugel später durchfallen kann (Initialzustand)
     BALL_FALL_THROUGH,
-    /// Wait for the next ball to have fallen through, then prepare servo for release
+    /// Auf die nächste Kugel warten, welche fallen gelassen wird. Anschließend den Servo für die Freigabe vorbereiten.
     BALL_FALLING_THROUGH,
-    /// Wait for the servo to finish preparations
+    /// Darauf warten das der Servo seine Vorbereitung abgeschlossen hat.
     PREPARING,
-    /// Idle state: Wait for trigger button press, then calculate release time
+    /// Wartezustand: Es wird auf den Knopfdruck gewartet um den Ball freizugeben. Anschließend wird die Freigabezeit berechnet.
     ARMED,
-    /// Wait for release time, then release
+    /// Warte auf den Freigabezeitpunkt, dann Kugel freigeben.
     WAIT_RELEASE,
-    /// Wait for servo to complete releasing, then go to \ref State::BALL_FALL_THROUGH
+    /// Warten bis der Servo die Freigabe abgeschlossen hat. Danach in den Zustand \ref State::BALL_FALL_THROUGH gehen.
     RELEASING,
   };
 
-  /// Type for functions providing a time measurement
   typedef long (*TimeProviderType)(void);
-  /// Type for functions providing a state measurement
   typedef bool (*StateProviderType)(void);
 
 private:
-  /// Current state
+  /// Aktueller Zustand
   State mState = State::BALL_FALL_THROUGH;
 
   /** 
-   * Time in µs since Arduino boot that the next state transition should take place
-   * 
-   * Only valid for timed transitions
+   * Zeit in µs seit dem Start des Arduino, in dem der nächste Zustandswechsel stattfinden sollte.
+   * Nur zulässig für zeitliche transitionen.
    */
   unsigned long mWaitUntil = 0;
-  /// Release mechanism controller
+  /// Controller des Freigabemechanismus
   ServoControl& mServoControl;
 
   /**

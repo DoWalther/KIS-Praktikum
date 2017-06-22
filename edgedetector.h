@@ -15,12 +15,12 @@ private:
 
 public:
   /**
-   * Provide a new state information to the edge detector
+   * Stellt eine neue Zustandsinformation für den Edge-Detektor bereit.
+   *
+   * Nach einem Zustandswechsel von false auf true, 
+   * wird die callback Funktion aufgerufen.
    * 
-   * If the state was false previously and is now true, the
-   * callback function will be called.
-   * 
-   * \param state current state of the signal
+   * \param state Aktueller Zustand des Signals.
    */
   void provideState(bool state)
   {
@@ -33,8 +33,9 @@ public:
   }
 
   /**
-   * Set the function to be called when a rising edge is detected on the signal
-   * \param callback function to be called
+   * Setzt die callback Funktion die bei aufsteigender Flanke aufgerufen wird.
+   *
+   * \param callback Funktion die aufgerufen wird.
    */
   void setCallback(CallbackType callback)
   {
