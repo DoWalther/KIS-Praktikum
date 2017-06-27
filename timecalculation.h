@@ -11,8 +11,8 @@ const long BALL_FALL_TIME_US = 391000UL + 27344UL;
   
 public:
   /**
-   * Berechnet schätzungsweise die Dauer der folgenden Umlauf der Scheibe
-   * auf Basis des letzten gemessenen Umlaufs
+   * Berechnet schätzungsweise die Dauer des folgenden Umlaufs der Scheibe
+   * auf Basis des letzten gemessenen Umlaufs.
    */
   unsigned long interpolateNextTurnTime(unsigned long lastTurnTime) const
   {
@@ -41,7 +41,7 @@ public:
   }
 
   /**
-   * Berechnet Wartezeit für nächsten Wurfzeitpunkt auf Basis des aktuellen Systemzustandes
+   * Berechnet den Wartezeit für den nächsten Zeitunkt des Abwurfs auf Basis des aktuellen Systemzustandes
    * 
    * lastTurnTime - Zeit der letzten Runde
    * timeInRound - Zeit seit letztem möglichen Wurfzeitpunktes

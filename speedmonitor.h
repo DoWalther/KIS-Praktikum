@@ -1,16 +1,10 @@
 /**
- * Monitor the time duration of high/low cycles on a pin
- * 
- * \ref setup and \ref loop must be called in their respective Arduino main counterparts.
- * 
- * Measurement data can be polled with \ref turnTime or optionally pushed to a callback
- * function by using \ref setCallback.
-
  * Aufzeichnung der Dauer eines high/low Zyklus eines Pins.
  * 
  * \ref setup und \ref loop müssen in ihren jeweilgen Arduino Gegenstück aufgerufen werden.
  * 
- * Die überprüften Daten können mit \ref turnTime gepullt oder optional zu einer callback Funktion mit \ref setCallback gepusht werden.
+ * Die überprüften Daten können mit \ref turnTime gepullt oder optional zu einer callback 
+ * Funktion mit \ref setCallback gepusht werden.
  */
 class SpeedMonitor
 {

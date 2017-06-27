@@ -1,18 +1,8 @@
 /**
- * Main state machine
- * 
- * The state machine is decoupled from the rest of the system. The inputs must be provided
- * as functors that can are called when the corresponding data is needed via \ref setReleaseTimeCalculator,
- * \ref setTriggerProvider and \ref setInhibitionProvider. The only output
- * is the servo motor which is controlled via a \ref ServoControl instanced provided
- * on construction.
- * 
- * \ref advanceState must be called in the Arduino main loop.
-
  * Zustandsmaschine
  * 
  * Zustandsmaschine ist vom Rest des Systems entkoppelt. Der input muss als functor bereit gestellt werden.
- * Welche über  \ref setReleaseTimeCalculator, \ref setTriggerProvider und \ref setInhibitionProvider aufgerufen werden können.,
+ * Welche über \ref setReleaseTimeCalculator, \ref setTriggerProvider und \ref setInhibitionProvider aufgerufen werden können.,
  * sobald die Daten benötigt werden.
  * Der einzige output ist der Servomotor, dessen Zugriff durch \ref ServoControl bereitgestellt wird.
  *
@@ -52,14 +42,21 @@ private:
   /// Controller des Freigabemechanismus
   ServoControl& mServoControl;
 
-  /**
+  /**-.-
    * Function providing the duration that should be waited until release
    * (given the current state of the system)
+   *
+   * Funktion die die Wartezeit bis zur Freigabe der Kugel bereitstellt.
+   * ()
    */
   TimeProviderType mReleaseTimeCalculator = nullptr;
-  /// Function providing the state of the trigger button (high for release)
+  /// -.- Function providing the state of the trigger button (high for release)
+
+  /// Funktion die den Zusatnd für den "Trigger-Button" bereitstellt (High-Flanke für Freigabe)
   StateProviderType mTriggerProvider = nullptr;
-  /// Function providing the state of the release inhibition (high for do not release)
+  /// -.- Function providing the state of the release inhibition (high for do not release)
+
+  /// Funktion die den Zustand der Freigabevermeidung bereitstellt (High-Flanke --> keine Freigabe)
   StateProviderType mInhibitionProvider = nullptr;
 
   /**
@@ -68,6 +65,11 @@ private:
    * The next state then needs to check when the transition should take place
    * by \ref isWaitDone.
    * \param us time to wait in µs
+
+   * PLant einen Zustandsübergang in der Zukunft
+   * 
+   * -.-
+   * \param us wartezeit in µs
    */
   void setWaitFromNow(unsigned long us)
   {
@@ -75,7 +77,9 @@ private:
   }
 
   /**
-   * Check whether the wait time previously set with \ref setWaitFromNow has passed
+   * -.-Check whether the wait time previously set with \ref setWaitFromNow has passed
+   *
+   * Überprüft ob die zuvor gesetzte Wartezeit (\ref setWaitFromNow) vergangen ist.
    */
   bool isWaitDone()
   {
@@ -84,22 +88,29 @@ private:
 
 public:
   /**
-   * Instantiate a new state machine
+   * -.-Instantiate a new state machine
    * \param servoControl release mechanism controller
+   *
+   * Intstantiiert eine neue Zustandsmaschine.
+   * \param ServoControl Controller des Freigabemechanismus
    */
   StateMachine(ServoControl& servoControl)
   : mServoControl(servoControl)
   {}
 
   /**
-   * Advance the state of the state machine and react to inputs
+   * -.- Advance the state of the state machine and react to inputs
+   *
+   *
    */
   void advanceState()
   {
     switch (mState) {
       case State::BALL_FALL_THROUGH:
         mServoControl.nextBall();
-        // Wait a bit longer so that the ball has definitely fallen through
+        //-.- Wait a bit longer so that the ball has definitely fallen through
+
+        // Ein bisschen länger Warten, dass die Kugel defintiv durchgefallen ist.
         setWaitFromNow(400000);
         mState = State::BALL_FALLING_THROUGH;
       break;
@@ -119,7 +130,9 @@ public:
       break;
       
       case State::ARMED:
-        // Start countdown only when not inhibited
+        // -.- Start countdown only when not inhibited
+
+	// Countdown wird nur gestartet, wenn nicht -.- wurde
         if (mTriggerProvider() && !mInhibitionProvider()) {
           auto waitTime = mReleaseTimeCalculator();
           if (waitTime >= 0) {
@@ -133,7 +146,9 @@ public:
       
       case State::WAIT_RELEASE:
         if (mInhibitionProvider()) {
-          // Abort release immediately
+          // -.- Abort release immediately
+
+	  // Freilassen sofort abbrechen
           mState = State::ARMED;
         } else if (isWaitDone()) {
           mServoControl.release();
@@ -151,7 +166,9 @@ public:
   }
 
   /**
-   * Get the state of the state machine
+   * -.- Get the state of the state machine
+   *
+   * Zustand der Zustandsmaschine abrufen.
    */
   State state() const
   {
@@ -159,10 +176,16 @@ public:
   }
 
   /**
-   * Set the function to be called to calculate the wait time for releasing the ball
+   * -.- Set the function to be called to calculate the wait time for releasing the ball
    * 
    * The function should return the time in µs to wait from the current point of time
    * until the ball can be released so it falls through the hole in the turntable.
+
+
+   * Setzt die Funktion, die aufgerufen werden soll, um die Wartezeit bis zur Freigabe der Kugel zu berechnen.
+   * 
+   * Die Funktion gibt die Zeit in µs zurück, die vom aktuellen Zeiptunkt bis zum Zeitpunkt der Freigabe der Kugel
+   * gewartet werden muss, damit die Kugel durch das Loch im Drehtisch fällt. 
    */
   void setReleaseTimeCalculator(TimeProviderType releaseTimeCalculator)
   {
@@ -170,9 +193,14 @@ public:
   }
 
   /**
-   * Set the function to be called to get the state of the trigger
+   * -.-Set the function to be called to get the state of the trigger
    * 
    * The function should return true to trigger a ball release.
+
+
+   * Setzt die Funktion die aufgerufen werden soll, um den Zustand des Triggers abzurufen.
+   * 
+   * Die Funktion soll "True" zurückgeben um eine Freigabe der Kugel zu triggern.
    */
   void setTriggerProvider(StateProviderType triggerProvider)
   {
@@ -180,7 +208,7 @@ public:
   }
 
   /**
-   * Set the function to be called to get the state of the inhibition
+   *-.- Set the function to be called to get the state of the inhibition
    *
    * The function should return true to prohibit release of the ball.
    */
