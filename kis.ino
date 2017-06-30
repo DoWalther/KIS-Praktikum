@@ -58,8 +58,8 @@ void setupComponentConnections()
   stateMachine.setReleaseTimeCalculator([]() {
     auto now = micros();
     auto lastCrossing = hallObserver.lastMeasurementTime();
-    auto timeInRound = now - lastCrossing;
-    return timeCalculation(hallObserver.turnTime(), timeInRound);
+    auto roundTime = now - lastCrossing;
+    return timeCalculation(hallObserver.turnTime(), roundTime);
   });
 
   firstButtonHighDetector.setCallback([]() {

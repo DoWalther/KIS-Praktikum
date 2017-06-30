@@ -130,7 +130,7 @@ public:
       break;
       
       case State::READY:
-        // -.- Start countdown only when not inhibited
+        // Countdown Start falls Suppression inaktiv
 
 	// Countdown wird nur gestartet, wenn nicht -.- wurde
         if (mTriggerProvider() && !mSuppressionProvider()) {
@@ -146,7 +146,7 @@ public:
       
       case State::WAIT:
         if (mSuppressionProvider()) {
-          // -.- Abort release immediately
+          // Abbruch für Freigabe
 
 	  // Freilassen sofort abbrechen
           mState = State::READY;
@@ -166,8 +166,7 @@ public:
   }
 
   /**
-   * -.- Get the state of the state machine
-   *
+
    * Zustand der Zustandsmaschine abrufen.
    */
   State state() const

@@ -44,10 +44,10 @@ public:
    * Berechnet den Wartezeit für den nächsten Zeitunkt des Abwurfs auf Basis des aktuellen Systemzustandes
    * 
    * lastTurnTime - Zeit der letzten Runde
-   * timeInRound - Zeit seit letztem möglichen Wurfzeitpunktes
+   * roundTime - Zeit seit letztem möglichen Wurfzeitpunktes
    * return - Zeit bis zum nächstmöglichen Wurfzeitpunkt
    */D
-  long operator()(unsigned long lastTurnTime, unsigned long timeInRound) const
+  long operator()(unsigned long lastTurnTime, unsigned long roundTime) const
   {
 	// über 8 Sekunden keine sinnvolle Berechnung möglichen
     if (lastTurnTime > 8000000UL) {
@@ -58,8 +58,8 @@ public:
 
     debugprintln("--");
     debugprint("time in round: ");
-    debugprintln(timeInRound);
-    long fallTimeAcc = - timeInRound;
+    debugprintln(roundTime);
+    long fallTimeAcc = - roundTime;
     auto nextTurnTime = lastTurnTime;
     while (1) {
       debugprint("old time: ");
