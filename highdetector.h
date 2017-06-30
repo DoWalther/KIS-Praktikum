@@ -1,7 +1,7 @@
 /**
  * Funktionsaufruf bei jeder Hochflanke eines Signales
  */
-class EdgeDetector
+class HighDetector
 {
   bool mLastState = false;
   
@@ -15,7 +15,7 @@ private:
 
 public:
   /**
-   * Stellt eine neue Zustandsinformation für den Edge-Detektor bereit.
+   * Stellt eine neue Zustandsinformation für den High-Detektor bereit.
    *
    * Nach einem Zustandswechsel von false auf true, 
    * wird die callback Funktion aufgerufen.

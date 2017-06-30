@@ -6,7 +6,7 @@
  * Die überprüften Daten können mit \ref turnTime gepullt oder optional zu einer callback 
  * Funktion mit \ref setCallback gepusht werden.
  */
-class SpeedMonitor
+class Observer
 {
   /// ID des überwachten Pins.
   const int mPin;
@@ -39,7 +39,7 @@ public:
    *\param factor Faktor mit dem die Zyklusdauer multipliziert wird, um die Zeit für eine volle Umdrehung zu erhalten.
    *\measureHalfCycles Ob komplette Zyklen (high/low transitionen) oder halbe Zyklen (low -> high und high -> low) gemessen werden sollen.
    */
-  SpeedMonitor(int pin, unsigned short factor = 1, bool measureHalfCycles = false)
+  Observer(int pin, unsigned short factor = 1, bool measureHalfCycles = false)
   : mPin(pin), mFactor(factor), mMeasureHalfCycles(measureHalfCycles)
   {}
 

@@ -1,7 +1,7 @@
 /**
  * Berechnung des Auslösezeitpunktes
  */
-class TimeCalculation
+class Time
 {
 /**
  * Zeit zwischen Auslösen und Landen der Kugel
@@ -46,7 +46,7 @@ public:
    * lastTurnTime - Zeit der letzten Runde
    * timeInRound - Zeit seit letztem möglichen Wurfzeitpunktes
    * return - Zeit bis zum nächstmöglichen Wurfzeitpunkt
-   */
+   */D
   long operator()(unsigned long lastTurnTime, unsigned long timeInRound) const
   {
 	// über 8 Sekunden keine sinnvolle Berechnung möglichen

@@ -3,7 +3,7 @@
 /**
  * Motorkontrolle
  */
-class ServoControl
+class EngineControl
 {
   /// Pin des Motors
   int mPin;
@@ -14,7 +14,7 @@ public:
   /**
    * Instanziert einen neuen Motor.
    */
-  ServoControl(int pin)
+  EngineControl(int pin)
   : mPin(pin)
   {}
 

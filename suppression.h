@@ -11,18 +11,18 @@
  * Nachdem durch den Lichtsensor ein zu großer Geschwindigkeitsunterschied zwischen zwei Runden erkannt wurde, wird die Freigabe der Kugel für zwei Hallsensorsignalewechsel, also eine Runde, unterdrückt.
  *
  */
-class Inhibitor
+class Suppression
 {
   /// Prozentualer Zeitunterschied zwischen zwei Runden, der nicht überschritten werden darf.
   /// Wird dieser überschritten, wird die Freigabe unterdrückt.
-  const double RELATIVE_INHIBITION_THRESHOLD = 0.08;
+  const double SUPPRESSION_LIMIT = 0.08;
   /// Vorherige Umdrehungszeit
   unsigned long mLastTurnTime = 0;
   
   /** 
    Anzahl der Runden, für die die Freigabe der Kugel gesperrt ist
    */
-  unsigned short mInhibitRounds = 0;
+  unsigned short mSuppressedRounds = 0;
   
 public:
   /**
@@ -30,13 +30,13 @@ public:
    */
   void lightSpeedCallback(unsigned long turnTime)
   {
-    if (fabs(static_cast<double> (mLastTurnTime) - static_cast<double> (turnTime)) / static_cast<double> (turnTime) > RELATIVE_INHIBITION_THRESHOLD) {
-      debugprintln("=== inhibition");
+    if (fabs(static_cast<double> (mLastTurnTime) - static_cast<double> (turnTime)) / static_cast<double> (turnTime) > SUPPRESSION_LIMIT) {
+      debugprintln("=== suppression");
       debugprint("last turn time: ");
       debugprintln(mLastTurnTime);
       debugprint("this turn time: ");
       debugprintln(turnTime);
-      mInhibitRounds = 2;
+      mSuppressedRounds = 2;
     }
     mLastTurnTime = turnTime;
   }
@@ -46,17 +46,17 @@ public:
    */
   void hallSpeedCallback(unsigned long)
   {
-    if (mInhibitRounds > 0) {
-      mInhibitRounds--;
+    if (mSuppressedRounds > 0) {
+      mSuppressedRounds--;
     }
   }
 
   /**
    * Prüfung, ob Auslösung gerade gesperrt ist
    */
-  bool isInhibited() const
+  bool suppressionState() const
   {
-    return (mInhibitRounds != 0);
+    return (mSuppressedRounds != 0);
   }
 };
 
