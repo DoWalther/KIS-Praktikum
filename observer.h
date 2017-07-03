@@ -68,10 +68,6 @@ public:
         unsigned long now = micros();
         unsigned long dif = now - mLastTime;
         mTurnTime = dif * mFactor;
-        
-        debugprint("tt new: ");
-        debugprintln(mTurnTime);
-        
         mLastTime = now;
         if (mCallback) {
           mCallback(mTurnTime);

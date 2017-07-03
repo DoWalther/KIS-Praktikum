@@ -56,35 +56,16 @@ public:
     
     auto t1 = micros();
 
-    debugprintln("--");
-    debugprint("time in round: ");
-    debugprintln(roundTime);
     long fallTimeAcc = - roundTime;
     auto nextTurnTime = lastTurnTime;
     while (1) {
-      debugprint("old time: ");
-      debugprint(nextTurnTime);
-      
       nextTurnTime = interpolateNextTurnTime(nextTurnTime);
-      
-      debugprint(" next turn time: ");
-      debugprint(nextTurnTime);
-
       fallTimeAcc += nextTurnTime;
-      
-      debugprint(" acc time: ");
-      debugprintln(fallTimeAcc);
-      
+            
       if (fallTimeAcc >= BALL_FALL_TIME_US) {
         auto waitTime = fallTimeAcc - BALL_FALL_TIME_US;
-        
-        debugprint("-> waitTime: ");
-        debugprintln(waitTime);
-
         auto t2 = micros();
         auto dif = t2 - t1;
-        debugprint("calc time: ");
-        debugprintln(dif);
         
         return waitTime;
       }

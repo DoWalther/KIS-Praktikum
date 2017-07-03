@@ -1,6 +1,5 @@
 
 #include "pins.h"
-#include "debug.h"
 #include "observer.h"
 #include "enginecontrol.h"
 #include "suppression.h"

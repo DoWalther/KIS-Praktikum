@@ -31,11 +31,6 @@ public:
   void lightSpeedCallback(unsigned long turnTime)
   {
     if (fabs(static_cast<double> (mLastTurnTime) - static_cast<double> (turnTime)) / static_cast<double> (turnTime) > SUPPRESSION_LIMIT) {
-      debugprintln("=== suppression");
-      debugprint("last turn time: ");
-      debugprintln(mLastTurnTime);
-      debugprint("this turn time: ");
-      debugprintln(turnTime);
       mSuppressedRounds = 2;
     }
     mLastTurnTime = turnTime;
