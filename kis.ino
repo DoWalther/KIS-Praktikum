@@ -52,7 +52,7 @@ void setupComponentConnections()
   stateMachine.setTriggerProvider([]() -> bool {
     return digitalRead(PIN_TRIGGER);
   });
-  stateMachine.setSuppressProvider([]() {
+  stateMachine.setSuppressionProvider([]() {
     return suppressor.suppressionState();
   });
   stateMachine.setReleaseTimeCalculator([]() {
@@ -93,8 +93,8 @@ void loop()
   
   stateMachine.advanceState();
 
-  // Output suppression state to LED
+  // Unterdrückung an LED1
   digitalWrite(PIN_LED1, suppressor.suppressionState());
-  // Output release state to LED
+  // Unterdrückung an LED2
   digitalWrite(PIN_LED2, (stateMachine.state() == StateMachine::State::WAIT));
 }

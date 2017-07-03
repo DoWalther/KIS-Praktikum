@@ -46,7 +46,7 @@ public:
    * lastTurnTime - Zeit der letzten Runde
    * roundTime - Zeit seit letztem möglichen Wurfzeitpunktes
    * return - Zeit bis zum nächstmöglichen Wurfzeitpunkt
-   */D
+   */
   long operator()(unsigned long lastTurnTime, unsigned long roundTime) const
   {
 	// über 8 Sekunden keine sinnvolle Berechnung möglichen

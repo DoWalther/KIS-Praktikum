@@ -1,5 +1,5 @@
 /**
- * zeilenweises Printen wenn debugging aktiviert * 
+ * zeilenweise Ausgabe wenn debugging aktiviert * 
  * \see Serial::println
  */
 template<typename T>
@@ -16,7 +16,7 @@ void debugprintln(
 }
 
 /**
- * zeilenweises Printen wenn debugging aktiviert * 
+ * zeilenweises Ausgabe wenn debugging aktiviert * 
  * \see Serial::println
  */
 template<typename T>

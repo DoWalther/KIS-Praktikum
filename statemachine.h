@@ -42,34 +42,19 @@ private:
   /// Controller des Freigabemechanismus
   EngineControl& mEngineControl;
 
-  /**-.-
-   * Function providing the duration that should be waited until release
-   * (given the current state of the system)
-   *
+  /**
    * Funktion die die Wartezeit bis zur Freigabe der Kugel bereitstellt.
-   * ()
    */
   TimeProviderType mReleaseTimeCalculator = nullptr;
-  /// -.- Function providing the state of the trigger button (high for release)
 
   /// Funktion die den Zusatnd für den "Trigger-Button" bereitstellt (High-Flanke für Freigabe)
   StateProviderType mTriggerProvider = nullptr;
-  /// -.- Function providing the state of the release suppression (high for do not release)
-
   /// Funktion die den Zustand der Freigabevermeidung bereitstellt (High-Flanke --> keine Freigabe)
   StateProviderType mSuppressionProvider = nullptr;
 
   /**
-   * Schedule a state transition in the future
-   * 
-   * The next state then needs to check when the transition should take place
-   * by \ref isWaitDone.
-   * \param us time to wait in µs
-
-   * PLant einen Zustandsübergang in der Zukunft
-   * 
-   * -.-
-   * \param us wartezeit in µs
+   * Plant einen Zustandsübergang in der Zukunft
+   * \param us Wartezeit in µs
    */
   void setWaitFromNow(unsigned long us)
   {
@@ -77,8 +62,6 @@ private:
   }
 
   /**
-   * -.-Check whether the wait time previously set with \ref setWaitFromNow has passed
-   *
    * Überprüft ob die zuvor gesetzte Wartezeit (\ref setWaitFromNow) vergangen ist.
    */
   bool isWaitDone()
@@ -88,9 +71,6 @@ private:
 
 public:
   /**
-   * -.-Instantiate a new state machine
-   * \param EngineControl release mechanism controller
-   *
    * Intstantiiert eine neue Zustandsmaschine.
    * \param EngineControl Controller des Freigabemechanismus
    */
@@ -99,17 +79,13 @@ public:
   {}
 
   /**
-   * -.- Advance the state of the state machine and react to inputs
-   *
-   *
+  * Zustandsübergänge
    */
   void advanceState()
   {
     switch (mState) {
       case State::CLOSED:
         mEngineControl.nextBall();
-        //-.- Wait a bit longer so that the ball has definitely fallen through
-
         // Ein bisschen länger Warten, dass die Kugel defintiv durchgefallen ist.
         setWaitFromNow(400000);
         mState = State::WAIT_BALL;
@@ -130,9 +106,8 @@ public:
       break;
       
       case State::READY:
-        // Countdown Start falls Suppression inaktiv
 
-	// Countdown wird nur gestartet, wenn nicht -.- wurde
+	// Countdown wird nur gestartet, wenn nicht unterdrückt
         if (mTriggerProvider() && !mSuppressionProvider()) {
           auto waitTime = mReleaseTimeCalculator();
           if (waitTime >= 0) {
@@ -148,7 +123,7 @@ public:
         if (mSuppressionProvider()) {
           // Abbruch für Freigabe
 
-	  // Freilassen sofort abbrechen
+	  // Freigabe sofort abbrechen
           mState = State::READY;
         } else if (isWaitDone()) {
           mEngineControl.release();
@@ -175,12 +150,6 @@ public:
   }
 
   /**
-   * -.- Set the function to be called to calculate the wait time for releasing the ball
-   * 
-   * The function should return the time in µs to wait from the current point of time
-   * until the ball can be released so it falls through the hole in the turntable.
-
-
    * Setzt die Funktion, die aufgerufen werden soll, um die Wartezeit bis zur Freigabe der Kugel zu berechnen.
    * 
    * Die Funktion gibt die Zeit in µs zurück, die vom aktuellen Zeiptunkt bis zum Zeitpunkt der Freigabe der Kugel
@@ -192,13 +161,7 @@ public:
   }
 
   /**
-   * -.-Set the function to be called to get the state of the trigger
-   * 
-   * The function should return true to trigger a ball release.
-
-
    * Setzt die Funktion die aufgerufen werden soll, um den Zustand des Triggers abzurufen.
-   * 
    * Die Funktion soll "True" zurückgeben um eine Freigabe der Kugel zu triggern.
    */
   void setTriggerProvider(StateProviderType triggerProvider)
@@ -207,9 +170,7 @@ public:
   }
 
   /**
-   *-.- Set the function to be called to get the state of the suppression
-   *
-   * The function should return true to prohibit release of the ball.
+   * Funktion um Unterdrückung abzurufen, true falls unterdrückt
    */
   void setSuppressionProvider(StateProviderType suppressionProvider)
   {
